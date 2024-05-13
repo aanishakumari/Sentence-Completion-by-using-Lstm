@@ -1,1 +1,5 @@
+Tensorflow = TensorFlow is an open-sourced end-to-end platform, a library for multiple machine learning tasks, while Keras is a high-level neural network library that runs on top of TensorFlow.
 
+Pandas = Pandas is a Python library used for working with data sets. It has functions for analyzing, cleaning, exploring, and manipulating data.
+
+NumPy = NumPy is a Python library used for working with arrays. It also has functions for working in domain of linear algebra, fourier transform, and matrices.
