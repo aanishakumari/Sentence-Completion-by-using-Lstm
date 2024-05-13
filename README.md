@@ -1,5 +1,5 @@
 # Sentence-Completion-by-using-Lstm
-over view
+OVER VIEW
 
 LSTM networks are a type of recurrent neural network (RNN) architecture, designed to address the vanishing gradient problem that often occurs in traditional RNNs. The vanishing gradient problem hampers the ability of RNNs to learn and retain long-term dependencies in sequential data.
 
