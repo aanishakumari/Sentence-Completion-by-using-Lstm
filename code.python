@@ -1,1 +1,74 @@
+!pip install pandas
 
+pip install numpy
+
+!pip install pandas
+import pandas as pd
+print("hello")
+!pip install tensorflow
+!pip install numpy
+print("jj")
+print("k")
+!pip install numpy
+!pip install tensorflow
+import pandas as pd
+import tensorflow as tf
+import numpy as np
+df = pd.read_csv('tmdb_5000_movies.csv')
+df.head(5)
+df = df['original_title']
+df
+movie_name = df.to_list()
+movie_name
+tokenizer = tf.keras.preprocessing.text.Tokenizer()
+tokenizer.fit_on_texts(movie_name)
+seq = tokenizer.texts_to_sequences(movie_name)
+seq[:10]
+tokenizer.word_index
+X = []
+y = []
+total_words_dropped = 0
+
+for i in seq:
+    if len(i) > 1:
+        for index in range(1, len(i)):
+            X.append(i[:index])
+            y.append(i[index])
+    else:
+        total_words_dropped += 1
+
+print("Total Single Words Dropped are:", total_words_dropped)
+X[:10]
+X = tf.keras.preprocessing.sequence.pad_sequences(X)
+X
+X.shape
+y = tf.keras.utils.to_categorical(y)
+y
+y.shape
+vocab_size = len(tokenizer.word_index) + 1
+vocab_size
+model = tf.keras.Sequential([
+    tf.keras.layers.Embedding(vocab_size, 14),
+    tf.keras.layers.LSTM(100, return_sequences=True),
+    tf.keras.layers.LSTM(100),
+    tf.keras.layers.Dense(100, activation='relu'),
+    tf.keras.layers.Dense(vocab_size, activation='softmax'),
+])
+model.summary()
+model.compile(
+    optimizer=tf.keras.optimizers.Adam(learning_rate=0.004),
+    loss='categorical_crossentropy',
+    metrics=['accuracy'])
+model.fit(X, y, epochs=150)
+vocab_array = np.array(list(tokenizer.word_index.keys()))
+vocab_array
+def make_prediction(text, n_words):
+    for i in range(n_words):
+        text_tokenize = tokenizer.texts_to_sequences([text])
+        text_padded = tf.keras.preprocessing.sequence.pad_sequences(text_tokenize, maxlen=14)
+        prediction = np.squeeze(np.argmax(model.predict(text_padded), axis=-1))
+        prediction = str(vocab_array[prediction - 1])
+        print(vocab_array[np.argsort(model.predict(text_padded)) - 1].ravel()[:-3])
+        text += " " + prediction
+    return text
+make_prediction("cloudy", 5)
